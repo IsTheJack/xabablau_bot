@@ -1,6 +1,7 @@
 var telegram = require('telegram-bot-api');
 var token = require('./config/tokenReader.js')() || process.env.botToken;
 var http = require('http');
+require('./config/dontSleep.js');
 
 const server = http.createServer((req, res) => {
   res.end();
