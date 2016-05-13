@@ -1,5 +1,9 @@
 var fs = require('fs');
 
 module.exports = function() {
-    return fs.readFileSync('.token').toString().trim();
+    try {
+        return fs.readFileSync('.token').toString().trim();
+    } catch (Error) {
+        return false;
+    }
 };
