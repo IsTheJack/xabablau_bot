@@ -1,5 +1,13 @@
 var telegram = require('telegram-bot-api');
 var token = require('./config/tokenReader.js')() || process.env.botToken;
+var http = require('http');
+
+const server = http.createServer((req, res) => {
+  res.end();
+});
+
+server.listen(process.env.PORT || 3000);
+
 
 var api = new telegram({
     token: token,
