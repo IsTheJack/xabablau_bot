@@ -40,41 +40,7 @@ bot.on('message', msg => {
     }
 });
 
-bot.onText(/amor/i, (msg) => {
-    const chatId = msg.chat.id;
-    const userId = msg.from.id;
-
-    var opts = {
-        reply_markup: JSON.stringify({
-            force_reply: true
-        }),
-    };
-
-    bot.sendMessage(chatId, 'O que você sabe sobre o amor, hein?', opts)
-        .then(sended => {
-            var messageId = sended.message_id;
-
-            bot.onReplyToMessage(chatId, messageId, (responseMessage) => {
-                bot.sendMessage(chatId, `"${responseMessage.text}"\nSabe de nada, inocente! (@${msg.from.username} hehe)`);
-            });
-        });
-
-});
-
-bot.onText(/^o que é (.+)|^o que e (.+)|^o que significa (.+)/i, (msg, match) => {
-    console.log(msg);
-    const chatId = msg.chat.id;
-    const arg = (match[1] || match[2] || match[3]).replace('?', '');
-
-    bot.sendMessage(chatId, `I don't know what is ${arg}`);
-});
-
-bot.onText(/kk|hihi|hoho|shuas|kaka/i, (msg, match) => {
-    const chatId = msg.chat.id;
-    bot.sendMessage(chatId, 'HUEHUEHUEHUEHUEHUE!!!');
-});
-
-bot.onText(/:3/i, (msg, match) => {
-    const chatId = msg.chat.id;
-    bot.sendMessage(chatId, '*--------*');
-});
+require('./conversation/amor.js')(bot);
+require('./conversation/oQueE.js')(bot);
+require('./conversation/risada.js')(bot);
+require('./conversation/smiles.js')(bot);
