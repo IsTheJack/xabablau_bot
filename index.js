@@ -48,7 +48,7 @@ bot.onText(/amor/i, (msg) => {
         }),
     };
 
-    bot.sendMessage(userId, 'O que você sabe sobre o amor?', opts)
+    bot.sendMessage(chatId, 'O que você sabe sobre o amor, hein?', opts)
         .then(sended => {
             var chatId = sended.chat.id;
             var messageId = sended.message_id;
