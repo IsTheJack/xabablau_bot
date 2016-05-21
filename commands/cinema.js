@@ -5,11 +5,11 @@ module.exports = function(bot) {
     return function(msg) {
         var text;
 
-        const fromId = msg.from.id;
+        const chatId = msg.chat.id;
         const initialText = `Espere um pouco, ${msg.from.first_name}.\n` +
         `Estou navegando no universo internético... Que nem o papai Ultron!\n`;
 
-        bot.sendMessage(fromId, initialText);
+        bot.sendMessage(chatId, initialText);
 
         request.get({
             url: 'http://www.redecineshow.com.br/programacao/7/resende.html',
@@ -51,7 +51,7 @@ module.exports = function(bot) {
                 }, "Pediu filme?! *TOMA FILMEEEE!!!*\n\n*-------------------------*\n");
             }
 
-            bot.sendMessage(fromId, text, {
+            bot.sendMessage(chatId, text, {
                 'parse_mode': 'Markdown',
             })
         });
