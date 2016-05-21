@@ -68,3 +68,13 @@ bot.onText(/^o que é (.+)|^o que e (.+)|^o que significa (.+)/i, (msg, match) =
 
     bot.sendMessage(chatId, `I don't know what is ${arg}`);
 });
+
+bot.onText(/kk|hihi|hoho|shuas|kaka/i, (msg, match) => {
+    const chatId = msg.chat.id;
+    bot.sendMessage(chatId, 'HUEHUEHUEHUEHUEHUE!!!');
+});
+
+bot.onText(/:3/i, (msg, match) => {
+    const chatId = msg.chat.id;
+    bot.sendMessage(chatId, '*--------*');
+});
