@@ -1,7 +1,7 @@
-module.exports = function(api) {
+module.exports = function(bot) {
     var commands = {
-        default: require('../commands/default.js')(api),
-        cinema: require('../commands/cinema.js')(api),
+        default: require('../commands/default.js')(bot),
+        cinema: require('../commands/cinema.js')(bot),
     };
 
     return {

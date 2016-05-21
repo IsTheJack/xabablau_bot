@@ -4,7 +4,7 @@ module.exports = function(api) {
             chat_id: message.chat.id,
             'parse_mode': 'Markdown',
             text: `Xabablau, ${message.from.first_name}.\n` +
-            `Por enquanto eu só sei ver os filmes que tão no Resende Shopping...\n` +
+            `Por enquanto eu só sei ver os filmes que tão em cartaz no Resende Shopping...\n` +
             `Digite /cinema que eu te falo.`,
         });
     };

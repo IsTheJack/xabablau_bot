@@ -1,16 +1,15 @@
 var cheerio = require('cheerio');
 var request = require('request');
 
-module.exports = function(api) {
-    return function(message) {
+module.exports = function(bot) {
+    return function(msg) {
         var text;
 
-        api.sendMessage({
-            chat_id: message.chat.id,
-            'parse_mode': 'Markdown',
-            text: `Espere um pouco, ${message.from.first_name}.\n` +
-            `Estou navegando no universo internético... Que nem o papai Ultron!\n`
-        });
+        const fromId = msg.from.id;
+        const initialText = `Espere um pouco, ${msg.from.first_name}.\n` +
+        `Estou navegando no universo internético... Que nem o papai Ultron!\n`;
+
+        bot.sendMessage(fromId, initialText);
 
         request.get({
             url: 'http://www.redecineshow.com.br/programacao/7/resende.html',
@@ -46,16 +45,14 @@ module.exports = function(api) {
                         subtitled +
                         `*Sala(s)*: ${x.numbersTheater}\n` +
                         `*Horário(s)*: ${x.time}\n` +
-                        "*-------------------------*\n\n"
+                        "*-------------------------*\n"
                     );
 
-                }, "Pediu filme?! *TOMA FILMEEEE!!!*\n\n");
+                }, "Pediu filme?! *TOMA FILMEEEE!!!*\n\n*-------------------------*\n");
             }
 
-            api.sendMessage({
-                chat_id: message.chat.id,
+            bot.sendMessage(fromId, text, {
                 'parse_mode': 'Markdown',
-                text: text,
             })
         });
     };

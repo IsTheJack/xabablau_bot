@@ -1,7 +1,10 @@
-var telegram = require('telegram-bot-api');
-var token = require('./config/tokenReader.js')() || process.env.botToken;
+// var telegram = require('telegram-bot-api');
+var TelegramBot = require('node-telegram-bot-api');
+var token = process.env.botToken || require('./config/tokenReader.js')();
 var http = require('http');
-require('./config/dontSleep.js');
+
+// ramdomResponses Helpers
+var withoutCommandResponse = require('./ramdom_responses/withoutCommand.js')
 
 const server = http.createServer((req, res) => {
   res.end();
@@ -9,22 +12,57 @@ const server = http.createServer((req, res) => {
 
 server.listen(process.env.PORT || 3000);
 
+var bot = new TelegramBot(token, {
+    polling: true
+});
 
-var api = new telegram({
-    token: token,
-    updates: {
-        enabled: true
+bot.getMe()
+    .then(me => {
+        console.log(`Olá, meu nome é ${me.first_name}!`);
+    });
+
+var commandInvoker = require('./config/commandInvoker')(bot);
+
+bot.on('message', msg => {
+    const chatId = msg.chat.id;
+
+    const isCommand = !!msg.entities && msg.entities[0].type === 'bot_command';
+    const hasCommand = !!commandInvoker[msg.text];
+
+    if(isCommand) {
+        if(hasCommand) {
+            commandInvoker[msg.text](msg);
+        } else {
+            bot.sendMessage(chatId, withoutCommandResponse(msg));
+        }
     }
 });
 
-var commandInvoker = require('./config/commandInvoker')(api);
+bot.onText(/amor/i, (msg) => {
+    const chatId = msg.chat.id;
+    const userId = msg.from.id;
 
-api.on('message', function(message) {
-    console.log(message);
+    var opts = {
+        reply_markup: JSON.stringify({
+            force_reply: true
+        }),
+    };
 
-    if(message.entities && message.entities[0].type === 'bot_command' && !!commandInvoker[message.text]) {
-        commandInvoker[message.text](message);
-    } else {
-        commandInvoker['/start'](message);
-    }
+    bot.sendMessage(userId, 'O que você sabe sobre o amor?', opts)
+        .then(sended => {
+            var chatId = sended.chat.id;
+            var messageId = sended.message_id;
+
+            bot.onReplyToMessage(chatId, messageId, (responseMessage) => {
+                bot.sendMessage(chatId, `"${responseMessage.text}"\nSabe de nada, inocente! (@${msg.from.username} hehe)`);
+            });
+        });
+
+});
+
+bot.onText(/^o que é (.+)|^o que e (.+)|^o que significa (.+)/i, (msg, match) => {
+    const chatId = msg.chat.id;
+    const arg = (match[1] || match[2] || match[3]).replace('?', '');
+
+    bot.sendMessage(chatId, `I don't know what is ${arg}`);
 });
