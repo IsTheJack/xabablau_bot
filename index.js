@@ -29,6 +29,8 @@ bot.on('message', msg => {
     const isCommand = !!msg.entities && msg.entities[0].type === 'bot_command';
     const hasCommand = !!commandInvoker[msg.text];
 
+    console.log(msg);
+
     if(isCommand) {
         if(hasCommand) {
             commandInvoker[msg.text](msg);
@@ -60,6 +62,7 @@ bot.onText(/amor/i, (msg) => {
 });
 
 bot.onText(/^o que é (.+)|^o que e (.+)|^o que significa (.+)/i, (msg, match) => {
+    console.log(msg);
     const chatId = msg.chat.id;
     const arg = (match[1] || match[2] || match[3]).replace('?', '');
 
