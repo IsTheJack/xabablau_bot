@@ -32,8 +32,10 @@ module.exports = function(bot) {
                     movies[i].dubbed = !!$(this).find('p img[alt="Dublado"]').length;
                     movies[i].subtitled = !!$(this).find('p img[alt="Legendado"]').length;
                     movies[i].numbersTheater = $(this).find('h4').text();
-                    $(this).find('span a').map(function(){ movieTimes.push(this.text)  } )
-                    movies[i].time = movieTimes.join(', ')});
+                    $(this).find('span a').map(function(){ movieTimes.push(this.text);  } )
+                    movies[i].time = movieTimes.join(', ');
+					          movieTimes = [];
+                  });
 
                 text = movies.reduce((acc, x) => {
                     var dubbed = x.dubbed? "Dublado\n": '';
