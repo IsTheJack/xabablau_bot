@@ -24,6 +24,7 @@ module.exports = function(bot) {
 
                 var everyMovies = $('ul.prog');
                 var movies = [];
+                var movieTimes = [];
 
                 everyMovies.find('.dt-prog').each(function (i, movieContainer) {
                     movies[i] = {};
@@ -31,8 +32,8 @@ module.exports = function(bot) {
                     movies[i].dubbed = !!$(this).find('p img[alt="Dublado"]').length;
                     movies[i].subtitled = !!$(this).find('p img[alt="Legendado"]').length;
                     movies[i].numbersTheater = $(this).find('h4').text();
-                    movies[i].time = $(this).find('h4 + p').text();
-                });
+                    $(this).find('span a').map(function(){ movieTimes.push(this.text)  } )
+                    movies[i].time = movieTimes.join(', ')});
 
                 text = movies.reduce((acc, x) => {
                     var dubbed = x.dubbed? "Dublado\n": '';
